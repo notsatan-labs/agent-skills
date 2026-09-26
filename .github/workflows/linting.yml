@@ -1,0 +1,39 @@
+name: Linter
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - "draft/**"
+      - "docs/**"
+      - "dura/**"
+  pull_request:
+    types: [ opened, reopened ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.14" ]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Dependencies
+      run: |
+        pip install pre-commit
+
+    - name: Log Versions
+      run: |
+        python --version
+        pre-commit --version
+
+    - name: Run Linter(s)
+      run: |
+        pre-commit run --all-files
