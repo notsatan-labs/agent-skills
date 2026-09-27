@@ -7,3 +7,10 @@ skills:
     path: cursor-team-kit/skills/thermo-nuclear-code-quality-review
     commit: ecc249f1e306fc64ddf83c7bed16cacf7c2239db
     sha256: 7b97339551d7f6db1438484571dc0117737f517b062c32b055328b5cfca1d2e6
+
+  show-me:
+    ref: refs/heads/main
+    repository: git@github.com:humanlayer/skills.git
+    path: plugins/show-me/skills/show-me
+    commit: ca7c8088db69e315a8b2deea43820270457f8f3c
+    sha256: 5546bb94faa273e0a9317dc25bc98036720658ce7a92fba2604c50dd84429649
