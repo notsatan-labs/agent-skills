@@ -10,6 +10,8 @@ repos:
       # Checkers
       - id: check-merge-conflict    # check for merge conflict string
       - id: detect-private-key      # check for existence of private keys
+      - id: check-yaml              # validate YAML syntax
+      - id: check-ast               # validate Python syntax
 
       # Implicit minor corrections to files
       - id: trailing-whitespace     # trim trailing whitespaces
@@ -42,3 +44,10 @@ repos:
     rev: 26.5.1
     hooks:
       - id: black
+        args: ['--check', '--diff']
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 9.0.1
+    hooks:
+      - id: isort
+        args: ['--check-only', '--diff', '--profile', 'black']

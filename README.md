@@ -18,6 +18,9 @@ To get a working copy of `agent-skills` on your end, simply clone the repository
 
 ```sh
 git clone git@github.com:notsatan-labs/agent-skills.git
+cd agent-skills
+python3 -m pip install -r requirements.txt
+pre-commit install
 ```
 </details>
 <br>
