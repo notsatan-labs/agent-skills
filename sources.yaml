@@ -1,3 +1,9 @@
 schema_version: 1
 
-skills: {}
+skills:
+  thermo-nuclear-code-quality-review:
+    ref: refs/heads/main
+    repository: org-126759922@github.com:cursor/plugins.git
+    path: cursor-team-kit/skills/thermo-nuclear-code-quality-review
+    commit: ecc249f1e306fc64ddf83c7bed16cacf7c2239db
+    sha256: 7b97339551d7f6db1438484571dc0117737f517b062c32b055328b5cfca1d2e6
