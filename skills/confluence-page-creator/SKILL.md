@@ -1,5 +1,5 @@
 ---
-name:  confluence-page-creator
+name: confluence-page-creator
 description: >
   Creates, updates, or edits technical Confluence pages. Use for technical content destined for Confluence. Also use when editing an existing Confluence page linked to.
 ---
