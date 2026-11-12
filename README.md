@@ -14,7 +14,7 @@ Just a bunch of generic stuff to get my agents working!
 
 ## Initial Setup
 
-Install Git, Make, and Python 3.12+ on macOS or Linux, then clone the repository
+Install Git, Make, and curl on macOS or Linux, then clone the repository
 and set up the development environment:
 
 ```sh
@@ -23,12 +23,16 @@ cd agent-skills
 make local-setup
 ```
 
-This creates `~/.virtualenvs/agent-skills`, installs `requirements.txt`, and
-installs the standard pre-commit and pre-push hooks. Each machine uses its own
-home directory, so macOS and a Linux sandbox can share a checkout while keeping
-their Python environments separate. Make prepends the environment's `bin`
-directory to PATH for each project command it runs. For dependencies without
-Git hook setup, use `make install`.
+This installs uv if needed, syncs the dependencies pinned in `uv.lock` into
+`~/.virtualenvs/agent-skills`, and installs the standard pre-commit and pre-push
+hooks. All dependencies belong to one project environment. For dependency setup
+without Git hooks, use `make install`.
+
+Each machine uses its own home directory, so macOS and a Linux sandbox can share
+a checkout while keeping their Python environments separate. Make sets
+`UV_PROJECT_ENVIRONMENT` and prepends the environment and uv installation
+directories to PATH for each command. Setup does not edit shell startup files.
+uv uses the Python version pinned in `.python-version`, downloading it if needed.
 
 Use `make` or `make help` to list available commands:
 
@@ -36,6 +40,8 @@ Use `make` or `make help` to list available commands:
 make checkstyle  # Run pre-commit checks on all tracked files
 make stylize    # Format tracked Python files and run the checks
 make test       # Run the skill manager tests
+make lock-check # Check that the lockfile matches pyproject.toml
+make versions   # Show uv, Python, and dependency versions
 ```
 
 Override the Python executable, or the environment directory, when needed:
@@ -46,7 +52,19 @@ make local-setup PYTHON_EXEC=python3.14
 make local-setup VENV="$HOME/.virtualenvs/agent-skills-custom"
 ```
 
-Continue to use the same `VENV` override for subsequent Make commands.
+Continue to use the same `VENV` and `PYTHON_EXEC` overrides, when set, for
+subsequent Make commands.
+
+Dependencies are declared in `pyproject.toml`. To add one, use
+`make add-dep pkg="package"`. After editing the dependency list manually, run
+`make lock`. Use `make uv-update` to upgrade the lockfile within the declared
+version constraints. Both commands refresh `requirements.txt`.
+
+`requirements.txt` is a generated, pinned export of the complete environment for
+tools that need that format. Regenerate it with `make freeze`; edit
+`pyproject.toml` rather than the export. Pre-commit checks lockfile consistency
+and regenerates the export when dependency files change. Make commands use
+`--locked`, so a stale lockfile causes a failure instead of silently changing it.
 <br>
 
 

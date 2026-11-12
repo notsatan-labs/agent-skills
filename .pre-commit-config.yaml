@@ -16,6 +16,7 @@ repos:
       # Implicit minor corrections to files
       - id: trailing-whitespace     # trim trailing whitespaces
       - id: end-of-file-fixer       # ensure all files end with a new line
+        exclude: ^requirements\.txt$
 
       # Good practices for executables/scripts
       - id: check-executables-have-shebangs       # non-binary executables have shebang
@@ -51,3 +52,20 @@ repos:
     hooks:
       - id: isort
         args: ['--check-only', '--diff', '--profile', 'black']
+
+  - repo: local
+    hooks:
+      - id: uv-lock-check
+        name: uv-lock-check
+        description: Check that uv.lock matches pyproject.toml without updating it
+        entry: make lock-check
+        language: system
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock|\.python-version)$
+
+      - id: uv-export
+        name: uv-export
+        entry: make freeze
+        language: system
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock|requirements\.txt|Makefile)$

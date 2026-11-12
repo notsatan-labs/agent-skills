@@ -1,0 +1,19 @@
+[project]
+name = "agent-skills"
+version = "0.1.0"
+description = "Personal agent skills and tools for managing vendored skills"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "GPL-3.0-only"
+dependencies = [
+    "black==26.5.1",
+    "isort==9.0.1",
+    "pre-commit>=4.6,<5",
+    "ruamel.yaml>=0.18,<0.19",
+]
+
+[tool.uv]
+package = false
+
+[tool.black]
+target-version = ["py312"]
