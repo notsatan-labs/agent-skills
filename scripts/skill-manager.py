@@ -22,7 +22,8 @@ try:
     from ruamel.yaml.error import YAMLError
 except ModuleNotFoundError:
     raise SystemExit(
-        "Install dependencies with: python3 -m pip install -r requirements.txt"
+        "Install dependencies with make install, then activate "
+        "the project's virtual environment."
     )
 
 
