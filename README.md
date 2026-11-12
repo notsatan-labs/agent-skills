@@ -14,15 +14,32 @@ Just a bunch of generic stuff to get my agents working!
 
 ## Initial Setup
 
-To get a working copy of `agent-skills` on your end, simply clone the repository
+Install Git, Make, and Python 3.12+ on macOS or Linux, then clone the repository
+and set up the development environment:
 
 ```sh
 git clone git@github.com:notsatan-labs/agent-skills.git
 cd agent-skills
-python3 -m pip install -r requirements.txt
-pre-commit install
+make local-setup
 ```
-</details>
+
+This creates `.venv`, installs `requirements.txt`, and registers the pre-commit
+and pre-push hooks. No virtual environment activation is needed for Make commands.
+For dependencies without Git hooks, use `make install`.
+
+Use `make` or `make help` to list available commands:
+
+```sh
+make checkstyle  # Run pre-commit checks on all tracked files
+make stylize    # Format tracked Python files and run the checks
+make test       # Run the skill manager tests
+```
+
+Override the Python executable or virtual environment directory when needed:
+
+```sh
+make local-setup PYTHON_EXEC=python3.14 VENV=.venv
+```
 <br>
 
 
@@ -51,7 +68,7 @@ While pre-commit hooks run automatically on every commit, you can also trigger t
 manually to check all files in the repository:
 
 ```sh
-pre-commit run --all-files
+make checkstyle
 ```
 
 ## Releases
