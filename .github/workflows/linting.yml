@@ -26,16 +26,15 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install Dependencies
-      run: |
-        python -m pip install -r requirements.txt
+      run: make install
 
     - name: Log Versions
       run: |
-        python --version
-        pre-commit --version
-        black --version
-        isort --version-number
+        venv_python="$HOME/.virtualenvs/agent-skills/bin/python"
+        "$venv_python" --version
+        "$venv_python" -m pre_commit --version
+        "$venv_python" -m black --version
+        "$venv_python" -m isort --version-number
 
     - name: Run Linter(s)
-      run: |
-        pre-commit run --all-files
+      run: make checkstyle
