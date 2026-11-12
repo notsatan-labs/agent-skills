@@ -19,10 +19,12 @@ unlisted directories and prevents accidental overwrites.
 
 ## Setup
 
-Install the YAML dependency:
+Install the project dependencies and activate the local environment before
+running the Python commands below:
 
 ```sh
-python3 -m pip install -r requirements.txt
+make install
+. "${VENV:-$HOME/.virtualenvs/agent-skills}/bin/activate"
 ```
 
 External skills are declared in the repository's `sources.yaml`:

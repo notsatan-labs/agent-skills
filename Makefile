@@ -6,9 +6,9 @@
 # Default python executable to use
 PYTHON_EXEC ?= python3
 
-# Virtual environment directory and its Python executable
-VENV ?= .venv
-VENV_PYTHON := $(VENV)/bin/python
+# Virtual environment directory and Python command with a local `PATH`
+VENV ?= $(HOME)/.virtualenvs/agent-skills
+VENV_PYTHON := PATH="$(VENV)/bin:$$PATH" "$(VENV)/bin/python"
 
 # Tracked Python files used by the formatters
 PYTHON_FILES := $(shell git ls-files -- '*.py')
@@ -32,7 +32,7 @@ help: Makefile
 .PHONY: local-setup
 ## `local-setup`: Install dependencies and Git hooks
 local-setup: install
-	"$(VENV_PYTHON)" -m pre_commit install --hook-type pre-commit --hook-type pre-push
+	$(VENV_PYTHON) -m pre_commit install --hook-type pre-commit --hook-type pre-push
 
 
 ## :
@@ -41,21 +41,21 @@ local-setup: install
 .PHONY: checkstyle
 ## `checkstyle`: Run pre-commit checks on all tracked files
 checkstyle: install
-	"$(VENV_PYTHON)" -m pre_commit run --all-files
+	$(VENV_PYTHON) -m pre_commit run --all-files
 
 
 .PHONY: stylize
 ## `stylize`: Format tracked Python files and run pre-commit checks
 stylize: install
-	"$(VENV_PYTHON)" -m isort --profile black $(PYTHON_FILES)
-	"$(VENV_PYTHON)" -m black $(PYTHON_FILES)
-	"$(VENV_PYTHON)" -m pre_commit run --all-files
+	$(VENV_PYTHON) -m isort --profile black $(PYTHON_FILES)
+	$(VENV_PYTHON) -m black $(PYTHON_FILES)
+	$(VENV_PYTHON) -m pre_commit run --all-files
 
 
 .PHONY: test
 ## `test`: Run the skill manager test suite
 test: install
-	"$(VENV_PYTHON)" -m unittest discover -s scripts/tests -v
+	$(VENV_PYTHON) -m unittest discover -s scripts/tests -v
 
 
 ## :
@@ -66,10 +66,10 @@ test: install
 install: $(VENV)/.requirements-installed
 
 
-$(VENV_PYTHON):
+$(VENV)/bin/python:
 	$(PYTHON_EXEC) -m venv "$(VENV)"
 
 
-$(VENV)/.requirements-installed: requirements.txt $(VENV_PYTHON)
-	"$(VENV_PYTHON)" -m pip install -r requirements.txt
+$(VENV)/.requirements-installed: requirements.txt $(VENV)/bin/python
+	$(VENV_PYTHON) -m pip install -r requirements.txt
 	@touch "$@"

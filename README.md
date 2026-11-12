@@ -23,9 +23,12 @@ cd agent-skills
 make local-setup
 ```
 
-This creates `.venv`, installs `requirements.txt`, and registers the pre-commit
-and pre-push hooks. No virtual environment activation is needed for Make commands.
-For dependencies without Git hooks, use `make install`.
+This creates `~/.virtualenvs/agent-skills`, installs `requirements.txt`, and
+installs the standard pre-commit and pre-push hooks. Each machine uses its own
+home directory, so macOS and a Linux sandbox can share a checkout while keeping
+their Python environments separate. Make prepends the environment's `bin`
+directory to PATH for each project command it runs. For dependencies without
+Git hook setup, use `make install`.
 
 Use `make` or `make help` to list available commands:
 
@@ -35,11 +38,15 @@ make stylize    # Format tracked Python files and run the checks
 make test       # Run the skill manager tests
 ```
 
-Override the Python executable or virtual environment directory when needed:
+Override the Python executable, or the environment directory, when needed:
 
 ```sh
-make local-setup PYTHON_EXEC=python3.14 VENV=.venv
+make local-setup PYTHON_EXEC=python3.14
+
+make local-setup VENV="$HOME/.virtualenvs/agent-skills-custom"
 ```
+
+Continue to use the same `VENV` override for subsequent Make commands.
 <br>
 
 
